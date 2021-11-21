@@ -35,7 +35,7 @@ module.exports = class API {
 
     CloseTicketInput = ["id_ticket"];
     CloseTicket({ id_ticket }) {
-        let url = this._driver.opaqueURL("/v1/ticket/close");
+        let url = this._driver.opaqueURL("/ticket/close");
         return this._driver.sendPut({
             data: { id_ticket },
             endpoint: url.toString(),
@@ -53,7 +53,7 @@ module.exports = class API {
 
     ConnectDomainInput = ["domain_name", "identity_name"];
     ConnectDomain({ domain_name, identity_name }) {
-        let url = this._driver.opaqueURL("/v1/domains/connect");
+        let url = this._driver.opaqueURL("/domains/connect");
         return this._driver.sendPost({
             data: { domain_name, identity_name },
             endpoint: url.toString(),
@@ -62,7 +62,7 @@ module.exports = class API {
 
     CreateDomainInput = ["name"];
     CreateDomain({ name }) {
-        let url = this._driver.opaqueURL("/v1/domains");
+        let url = this._driver.opaqueURL("/domains");
         return this._driver.sendPost({
             data: { name },
             endpoint: url.toString(),
@@ -89,7 +89,7 @@ module.exports = class API {
 
     CreateScanInput = ["type", "domain_name"];
     CreateScan({ type, domain_name }) {
-        let url = this._driver.opaqueURL("/api/v1/scans");
+        let url = this._driver.opaqueURL("/scans");
         return this._driver.sendPost({
             data: { type, domain_name },
             endpoint: url.toString(),
@@ -98,7 +98,7 @@ module.exports = class API {
 
     CreateUserInput = ["email", "password", "source"];
     CreateUser({ email, password, source }) {
-        let url = this._driver.opaqueURL("/v1/user");
+        let url = this._driver.opaqueURL("/user");
         return this._driver.sendPost({
             data: { email, password, source },
             endpoint: url.toString(),
@@ -107,7 +107,7 @@ module.exports = class API {
 
     CreateVipWatchInput = ["identity_name", "email"];
     CreateVipWatch({ identity_name, email }) {
-        let url = this._driver.opaqueURL("/v1/vip/watch");
+        let url = this._driver.opaqueURL("/vip/watch");
         return this._driver.sendPost({
             data: { identity_name, email },
             endpoint: url.toString(),
@@ -133,7 +133,7 @@ module.exports = class API {
 
     DigDomainInput = ["domain"];
     DigDomain({ domain }) {
-        let url = this._driver.opaqueURL("/api/v1/domains/dig");
+        let url = this._driver.opaqueURL("/domains/dig");
         return this._driver.sendPost({
             data: { domain },
             endpoint: url.toString(),
@@ -142,7 +142,7 @@ module.exports = class API {
 
     DisconnectDomainInput = ["domain_name", "identity_name"];
     DisconnectDomain({ domain_name, identity_name }) {
-        let url = this._driver.opaqueURL("/v1/domains/connect");
+        let url = this._driver.opaqueURL("/domains/connect");
         return this._driver.sendDelete({
             data: { domain_name, identity_name },
             endpoint: url.toString(),
@@ -151,7 +151,7 @@ module.exports = class API {
 
     GetMyLeakInput = ["id_leak"];
     GetMyLeak({ id_leak }) {
-        let url = this._driver.opaqueURL("/v1/my/leak");
+        let url = this._driver.opaqueURL("/my/leak");
         return this._driver.sendPost({
             data: { id_leak },
             endpoint: url.toString(),
@@ -160,7 +160,7 @@ module.exports = class API {
 
     GrantAccessInput = ["email", "identity_name", "role"];
     GrantAccess({ email, identity_name, role }) {
-        let url = this._driver.opaqueURL("/v1/access");
+        let url = this._driver.opaqueURL("/access");
         return this._driver.sendPost({
             data: { email, identity_name, role },
             endpoint: url.toString(),
@@ -215,7 +215,7 @@ module.exports = class API {
     }
 
     IntegrationTest(input) {
-        let url = this._driver.opaqueURL("/api/v1/integration-test");
+        let url = this._driver.opaqueURL("/integration-test");
         return this._driver.sendPost({
             data: input,
             endpoint: url.toString(),
@@ -224,7 +224,7 @@ module.exports = class API {
 
     ListAccessForInput = ["identity_name"];
     ListAccessFor({ identity_name }) {
-        let url = this._driver.opaqueURL("/v1/identity/access");
+        let url = this._driver.opaqueURL("/identity/access");
         return this._driver.sendPost({
             data: { identity_name },
             endpoint: url.toString(),
@@ -232,7 +232,7 @@ module.exports = class API {
     }
 
     ListDomains() {
-        let url = this._driver.opaqueURL("/v1/domains");
+        let url = this._driver.opaqueURL("/domains");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
@@ -241,7 +241,7 @@ module.exports = class API {
 
     ListDomainsByIdentityInput = ["identity_name"];
     ListDomainsByIdentity({ identity_name }) {
-        let url = this._driver.opaqueURL("/v1/identity/domains");
+        let url = this._driver.opaqueURL("/identity/domains");
         return this._driver.sendPost({
             data: { identity_name },
             endpoint: url.toString(),
@@ -250,7 +250,7 @@ module.exports = class API {
 
     ListLeaksByIdentityInput = ["identity_name"];
     ListLeaksByIdentity({ identity_name }) {
-        let url = this._driver.opaqueURL("/v1/identity/leaks");
+        let url = this._driver.opaqueURL("/identity/leaks");
         return this._driver.sendPost({
             data: { identity_name },
             endpoint: url.toString(),
@@ -299,7 +299,7 @@ module.exports = class API {
     }
 
     ListScans() {
-        let url = this._driver.opaqueURL("/api/v1/scans");
+        let url = this._driver.opaqueURL("/scans");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
@@ -308,7 +308,7 @@ module.exports = class API {
 
     ListSeriesInput = ["id_identity"];
     ListSeries({ id_identity }) {
-        let url = this._driver.opaqueURL(["", "v1", "identity", encodeURIComponent(id_identity), "series"].join("/"));
+        let url = this._driver.opaqueURL(["", "identity", encodeURIComponent(id_identity), "series"].join("/"));
         if (id_identity) url.searchParams.set("id_identity", id_identity);
 
         return this._driver.sendGet({
@@ -317,7 +317,7 @@ module.exports = class API {
     }
 
     ListUsers() {
-        let url = this._driver.opaqueURL("/v1/user");
+        let url = this._driver.opaqueURL("/user");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
@@ -326,7 +326,7 @@ module.exports = class API {
 
     ListVipInput = ["identity_name", "email"];
     ListVip({ identity_name, email }) {
-        let url = this._driver.opaqueURL("/v1/identity/vip");
+        let url = this._driver.opaqueURL("/identity/vip");
         return this._driver.sendPost({
             data: { identity_name, email },
             endpoint: url.toString(),
@@ -351,7 +351,7 @@ module.exports = class API {
 
     PasswordLoginInput = ["email", "password"];
     PasswordLogin({ email, password }) {
-        let url = this._driver.opaqueURL("/v1/auth/password");
+        let url = this._driver.opaqueURL("/auth/password");
         return this._driver.sendPost({
             data: { email, password },
             endpoint: url.toString(),
@@ -369,7 +369,7 @@ module.exports = class API {
 
     ReopenTicketInput = ["id_ticket"];
     ReopenTicket({ id_ticket }) {
-        let url = this._driver.opaqueURL("/v1/ticket/reopen");
+        let url = this._driver.opaqueURL("/ticket/reopen");
         return this._driver.sendPut({
             data: { id_ticket },
             endpoint: url.toString(),
@@ -387,7 +387,7 @@ module.exports = class API {
 
     RevokeAccessInput = ["email", "identity_name", "role"];
     RevokeAccess({ email, identity_name, role }) {
-        let url = this._driver.opaqueURL("/v1/access");
+        let url = this._driver.opaqueURL("/access");
         return this._driver.sendDelete({
             data: { email, identity_name, role },
             endpoint: url.toString(),
@@ -413,7 +413,7 @@ module.exports = class API {
     }
 
     RunSeries(input) {
-        let url = this._driver.opaqueURL("/v1/series/run");
+        let url = this._driver.opaqueURL("/series/run");
         return this._driver.sendPost({
             data: input,
             endpoint: url.toString(),
@@ -422,7 +422,7 @@ module.exports = class API {
 
     ScanDomainInput = ["domain"];
     ScanDomain({ domain }) {
-        let url = this._driver.opaqueURL("/api/v1/domains/scan");
+        let url = this._driver.opaqueURL("/domains/scan");
         return this._driver.sendPost({
             data: { domain },
             endpoint: url.toString(),
@@ -431,7 +431,7 @@ module.exports = class API {
 
     ScheduleDomainInput = ["name"];
     ScheduleDomain({ name }) {
-        let url = this._driver.opaqueURL("/v1/domains-management/schedule");
+        let url = this._driver.opaqueURL("/domains-management/schedule");
         return this._driver.sendPost({
             data: { name },
             endpoint: url.toString(),
@@ -439,7 +439,7 @@ module.exports = class API {
     }
 
     SendNotifications(input) {
-        let url = this._driver.opaqueURL("/v1/send-notifications");
+        let url = this._driver.opaqueURL("/send-notifications");
         return this._driver.sendPost({
             data: input,
             endpoint: url.toString(),
@@ -448,7 +448,7 @@ module.exports = class API {
 
     ServiceLoginInput = ["key"];
     ServiceLogin({ key }) {
-        let url = this._driver.opaqueURL("/api/v1/auth/service");
+        let url = this._driver.opaqueURL("/auth/service");
         return this._driver.sendPost({
             data: { key },
             endpoint: url.toString(),
@@ -457,7 +457,7 @@ module.exports = class API {
 
     SetPhoneInput = ["email", "phone"];
     SetPhone({ email, phone }) {
-        let url = this._driver.opaqueURL("/v1/user/phone");
+        let url = this._driver.opaqueURL("/user/phone");
         return this._driver.sendPut({
             data: { email, phone },
             endpoint: url.toString(),
@@ -524,7 +524,7 @@ module.exports = class API {
 
     UpdateTicketDescriptionInput = ["id_ticket", "description"];
     UpdateTicketDescription({ id_ticket, description }) {
-        let url = this._driver.opaqueURL("/v1/ticket/description");
+        let url = this._driver.opaqueURL("/ticket/description");
         return this._driver.sendPut({
             data: { id_ticket, description },
             endpoint: url.toString(),
