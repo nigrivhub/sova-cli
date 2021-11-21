@@ -1,0 +1,30 @@
+{
+  "name": "@nigrivhub/sova-cli",
+  "version": "0.0.2",
+  "description": "Official CLI for sova.nigrivhub.com",
+  "main": "cli-runner.js",
+  "bin": "cli-runner.js",
+  "scripts": {
+    "test": "node cli-runner.js help",
+    "ci": "npm run test && npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nigrivhub/sova-cli.git"
+  },
+  "keywords": [
+    "nigriv",
+    "nigrivhub",
+    "darknet",
+    "sova"
+  ],
+  "author": "Nigriv Sp. z o.o.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nigrivhub/sova-cli/issues"
+  },
+  "homepage": "https://github.com/nigrivhub/sova-cli#readme",
+  "dependencies": {
+    "isomorphic-fetch": "^3.0.0"
+  }
+}
