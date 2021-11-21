@@ -1,6 +1,6 @@
 {
   "name": "@nigrivhub/sova-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Official CLI for sova.nigrivhub.com",
   "main": "cli-runner.js",
   "bin": "cli-runner.js",
