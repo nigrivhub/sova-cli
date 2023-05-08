@@ -1,5 +1,5 @@
-const Api = require("./api.js");
-const options = require("./options");
+import Api from "./api.js";
+import options from "./options";
 
 const getMethods = (obj) => {
     let result = new Set();
@@ -10,7 +10,7 @@ const getMethods = (obj) => {
     return [...result.keys()].filter(item => item.match(/^[A-Z]/g) && typeof obj[item] === 'function');
 };
 
-module.exports = class CLI {
+export default class CLI {
 
     constructor() {
         this.client = new Api();
@@ -67,7 +67,7 @@ module.exports = class CLI {
                 result.methodName = arg;
                 return;
             }
-            let is_key = arg.startsWith("--");
+            let is_key = /--[^-]/.test(arg);
             if (is_key) arg = arg.slice(2);
             if (key_enabled) {
                 result.args[key_enabled] = arg;

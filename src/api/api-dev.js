@@ -1,6 +1,6 @@
-const ApiDriver = require("./driver.js");
+import ApiDriver from "./driver.js";
 
-const API_HOST = "api.sova.nigrivhub.com";
+const API_HOST = "api.sova.nigrivhub.com.local";
 
 module.exports = class API {
     
@@ -24,11 +24,11 @@ module.exports = class API {
         });
     }
 
-    ChangeDomainActivityInput = ["domain_name", "is_active"];
-    ChangeDomainActivity({ domain_name, is_active }) {
-        let url = this._driver.opaqueURL("/domains/active");
+    ChangeKeywordActivityInput = ["keyword_name", "is_active"];
+    ChangeKeywordActivity({ keyword_name, is_active }) {
+        let url = this._driver.opaqueURL("/keywords/active");
         return this._driver.sendPut({
-            data: { domain_name, is_active },
+            data: { keyword_name, is_active },
             endpoint: url.toString(),
         });
     }
@@ -51,18 +51,18 @@ module.exports = class API {
         });
     }
 
-    ConnectDomainInput = ["domain_name", "identity_name"];
-    ConnectDomain({ domain_name, identity_name }) {
-        let url = this._driver.opaqueURL("/domains/connect");
+    ConnectKeywordInput = ["keyword_name", "identity_name"];
+    ConnectKeyword({ keyword_name, identity_name }) {
+        let url = this._driver.opaqueURL("/keywords/connect");
         return this._driver.sendPost({
-            data: { domain_name, identity_name },
+            data: { keyword_name, identity_name },
             endpoint: url.toString(),
         });
     }
 
-    CreateDomainInput = ["name"];
-    CreateDomain({ name }) {
-        let url = this._driver.opaqueURL("/domains");
+    CreateKeywordInput = ["name"];
+    CreateKeyword({ name }) {
+        let url = this._driver.opaqueURL("/keywords");
         return this._driver.sendPost({
             data: { name },
             endpoint: url.toString(),
@@ -87,11 +87,11 @@ module.exports = class API {
         });
     }
 
-    CreateScanInput = ["type", "domain_name"];
-    CreateScan({ type, domain_name }) {
+    CreateScanInput = ["type", "keyword_name"];
+    CreateScan({ type, keyword_name }) {
         let url = this._driver.opaqueURL("/scans");
         return this._driver.sendPost({
-            data: { type, domain_name },
+            data: { type, keyword_name },
             endpoint: url.toString(),
         });
     }
@@ -131,20 +131,38 @@ module.exports = class API {
         });
     }
 
-    DigDomainInput = ["domain"];
-    DigDomain({ domain }) {
-        let url = this._driver.opaqueURL("/domains/dig");
+    DirectQueryKeywordInput = ["keyword", "page", "from", "to"];
+    DirectQueryKeyword({ keyword, page, from, to }) {
+        let url = this._driver.opaqueURL("/keywords/directquery");
         return this._driver.sendPost({
-            data: { domain },
+            data: { keyword, page, from, to },
             endpoint: url.toString(),
         });
     }
 
-    DisconnectDomainInput = ["domain_name", "identity_name"];
-    DisconnectDomain({ domain_name, identity_name }) {
-        let url = this._driver.opaqueURL("/domains/connect");
+    DisconnectKeywordInput = ["keyword_name", "identity_name"];
+    DisconnectKeyword({ keyword_name, identity_name }) {
+        let url = this._driver.opaqueURL("/keywords/connect");
         return this._driver.sendDelete({
-            data: { domain_name, identity_name },
+            data: { keyword_name, identity_name },
+            endpoint: url.toString(),
+        });
+    }
+
+    FinalizeMFAInput = ["email", "password"];
+    FinalizeMFA({ email, password }) {
+        let url = this._driver.opaqueURL("/login/mfa/ack");
+        return this._driver.sendPost({
+            data: { email, password },
+            endpoint: url.toString(),
+        });
+    }
+
+    GetIdentityQuotaInput = ["id_identity"];
+    GetIdentityQuota({ id_identity }) {
+        let url = this._driver.opaqueURL("/quota/identity");
+        return this._driver.sendPost({
+            data: { id_identity },
             endpoint: url.toString(),
         });
     }
@@ -158,6 +176,15 @@ module.exports = class API {
         });
     }
 
+    GetUserQuotaInput = ["id_user"];
+    GetUserQuota({ id_user }) {
+        let url = this._driver.opaqueURL("/quota/user");
+        return this._driver.sendPost({
+            data: { id_user },
+            endpoint: url.toString(),
+        });
+    }
+
     GrantAccessInput = ["email", "identity_name", "role"];
     GrantAccess({ email, identity_name, role }) {
         let url = this._driver.opaqueURL("/access");
@@ -167,20 +194,40 @@ module.exports = class API {
         });
     }
 
-    CreateIdentityInput = ["id_identity", "name"];
-    CreateIdentity({ id_identity, name }) {
+    CreateIdentityDatastore(input) {
         let url = this._driver.opaqueURL("/v1/identities");
         return this._driver.sendPost({
-            data: { id_identity, name },
+            data: input,
             endpoint: url.toString(),
         });
     }
 
-    DeleteIdentityInput = ["id_identity", "name"];
-    DeleteIdentity({ id_identity, name }) {
+    DeleteIdentityDatastoreInput = ["name", "created_at", "quota"];
+    DeleteIdentityDatastore({ name, created_at, quota }) {
         let url = this._driver.opaqueURL("/v1/identities");
         return this._driver.sendDelete({
-            data: { id_identity, name },
+            data: { name, created_at, quota },
+            endpoint: url.toString(),
+        });
+    }
+
+    ListIdentityDatastoreInput = ["name", "created_at", "quota"];
+    ListIdentityDatastore({ name, created_at, quota }) {
+        let url = this._driver.opaqueURL(["", "v1", "identities"].join("/"));
+        if (name) url.searchParams.set("name", name);
+        if (created_at) url.searchParams.set("created_at", created_at);
+        if (quota) url.searchParams.set("quota", quota);
+
+        return this._driver.sendGet({
+            endpoint: url.toString(),
+        });
+    }
+
+    UpdateIdentityDatastoreInput = ["where", "to"];
+    UpdateIdentityDatastore({ where, to }) {
+        let url = this._driver.opaqueURL("/v1/identities");
+        return this._driver.sendPut({
+            data: { where, to },
             endpoint: url.toString(),
         });
     }
@@ -190,26 +237,6 @@ module.exports = class API {
         let url = this._driver.opaqueURL("/me/identity-exchange");
         return this._driver.sendPost({
             data: { id_identity },
-            endpoint: url.toString(),
-        });
-    }
-
-    ListIdentityInput = ["id_identity", "name"];
-    ListIdentity({ id_identity, name }) {
-        let url = this._driver.opaqueURL(["", "v1", "identities"].join("/"));
-        if (id_identity) url.searchParams.set("id_identity", id_identity);
-        if (name) url.searchParams.set("name", name);
-
-        return this._driver.sendGet({
-            endpoint: url.toString(),
-        });
-    }
-
-    UpdateIdentityInput = ["id_identity", "name"];
-    UpdateIdentity({ id_identity, name }) {
-        let url = this._driver.opaqueURL("/v1/identities");
-        return this._driver.sendPut({
-            data: { id_identity, name },
             endpoint: url.toString(),
         });
     }
@@ -231,17 +258,17 @@ module.exports = class API {
         });
     }
 
-    ListDomains() {
-        let url = this._driver.opaqueURL("/domains");
+    ListKeywords() {
+        let url = this._driver.opaqueURL("/keywords");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
         });
     }
 
-    ListDomainsByIdentityInput = ["identity_name"];
-    ListDomainsByIdentity({ identity_name }) {
-        let url = this._driver.opaqueURL("/identity/domains");
+    ListKeywordsByIdentityInput = ["identity_name"];
+    ListKeywordsByIdentity({ identity_name }) {
+        let url = this._driver.opaqueURL("/identity/keywords");
         return this._driver.sendPost({
             data: { identity_name },
             endpoint: url.toString(),
@@ -257,16 +284,16 @@ module.exports = class API {
         });
     }
 
-    ListMyDomains() {
-        let url = this._driver.opaqueURL("/my/domains");
+    ListMyIdentities() {
+        let url = this._driver.opaqueURL("/my/identities");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
         });
     }
 
-    ListMyIdentities() {
-        let url = this._driver.opaqueURL("/my/identities");
+    ListMyKeywords() {
+        let url = this._driver.opaqueURL("/my/keywords");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
@@ -317,7 +344,7 @@ module.exports = class API {
     }
 
     ListUsers() {
-        let url = this._driver.opaqueURL("/user");
+        let url = this._driver.opaqueURL("/users");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
@@ -394,24 +421,6 @@ module.exports = class API {
         });
     }
 
-    RunScanDTInput = ["domain_name"];
-    RunScanDT({ domain_name }) {
-        let url = this._driver.opaqueURL("/scans/run-dt");
-        return this._driver.sendPost({
-            data: { domain_name },
-            endpoint: url.toString(),
-        });
-    }
-
-    RunScanFullInput = ["domain_name"];
-    RunScanFull({ domain_name }) {
-        let url = this._driver.opaqueURL("/scans/run-full");
-        return this._driver.sendPost({
-            data: { domain_name },
-            endpoint: url.toString(),
-        });
-    }
-
     RunSeries(input) {
         let url = this._driver.opaqueURL("/series/run");
         return this._driver.sendPost({
@@ -420,18 +429,9 @@ module.exports = class API {
         });
     }
 
-    ScanDomainInput = ["domain"];
-    ScanDomain({ domain }) {
-        let url = this._driver.opaqueURL("/domains/scan");
-        return this._driver.sendPost({
-            data: { domain },
-            endpoint: url.toString(),
-        });
-    }
-
-    ScheduleDomainInput = ["name"];
-    ScheduleDomain({ name }) {
-        let url = this._driver.opaqueURL("/domains-management/schedule");
+    ScheduleKeywordInput = ["name"];
+    ScheduleKeyword({ name }) {
+        let url = this._driver.opaqueURL("/keyword-management/schedule");
         return this._driver.sendPost({
             data: { name },
             endpoint: url.toString(),
@@ -464,6 +464,15 @@ module.exports = class API {
         });
     }
 
+    SetQuotaInput = ["value"];
+    SetQuota({ value }) {
+        let url = this._driver.opaqueURL("/quota/set");
+        return this._driver.sendPost({
+            data: { value },
+            endpoint: url.toString(),
+        });
+    }
+
     StartPhoneChallengeInput = ["phone"];
     StartPhoneChallenge({ phone }) {
         let url = this._driver.opaqueURL("/me/start-phone-challenge");
@@ -481,43 +490,60 @@ module.exports = class API {
         });
     }
 
-    CreateTicketInput = ["id_ticket", "id_leak", "id_identity", "description", "state"];
-    CreateTicket({ id_ticket, id_leak, id_identity, description, state }) {
-        let url = this._driver.opaqueURL("/v1/tickets");
-        return this._driver.sendPost({
-            data: { id_ticket, id_leak, id_identity, description, state },
-            endpoint: url.toString(),
-        });
-    }
-
-    DeleteTicketInput = ["id_ticket", "id_leak", "id_identity", "description", "state"];
-    DeleteTicket({ id_ticket, id_leak, id_identity, description, state }) {
-        let url = this._driver.opaqueURL("/v1/tickets");
-        return this._driver.sendDelete({
-            data: { id_ticket, id_leak, id_identity, description, state },
-            endpoint: url.toString(),
-        });
-    }
-
-    ListTicketInput = ["id_ticket", "id_leak", "id_identity", "description", "state"];
-    ListTicket({ id_ticket, id_leak, id_identity, description, state }) {
-        let url = this._driver.opaqueURL(["", "v1", "tickets"].join("/"));
-        if (id_ticket) url.searchParams.set("id_ticket", id_ticket);
-        if (id_leak) url.searchParams.set("id_leak", id_leak);
-        if (id_identity) url.searchParams.set("id_identity", id_identity);
-        if (description) url.searchParams.set("description", description);
-        if (state) url.searchParams.set("state", state);
+    TEST() {
+        let url = this._driver.opaqueURL("/test");
 
         return this._driver.sendGet({
             endpoint: url.toString(),
         });
     }
 
-    UpdateTicketInput = ["id_ticket", "id_leak", "id_identity", "description", "state"];
-    UpdateTicket({ id_ticket, id_leak, id_identity, description, state }) {
+    CreateTicketDatastore(input) {
+        let url = this._driver.opaqueURL("/v1/tickets");
+        return this._driver.sendPost({
+            data: input,
+            endpoint: url.toString(),
+        });
+    }
+
+    DeleteTicketDatastoreInput = ["id_leak", "id_identity", "description", "state", "created_at", "closed_at"];
+    DeleteTicketDatastore({ id_leak, id_identity, description, state, created_at, closed_at }) {
+        let url = this._driver.opaqueURL("/v1/tickets");
+        return this._driver.sendDelete({
+            data: { id_leak, id_identity, description, state, created_at, closed_at },
+            endpoint: url.toString(),
+        });
+    }
+
+    ListTicketDatastoreInput = ["id_leak", "id_identity", "description", "state", "created_at", "closed_at"];
+    ListTicketDatastore({ id_leak, id_identity, description, state, created_at, closed_at }) {
+        let url = this._driver.opaqueURL(["", "v1", "tickets"].join("/"));
+        if (id_leak) url.searchParams.set("id_leak", id_leak);
+        if (id_identity) url.searchParams.set("id_identity", id_identity);
+        if (description) url.searchParams.set("description", description);
+        if (state) url.searchParams.set("state", state);
+        if (created_at) url.searchParams.set("created_at", created_at);
+        if (closed_at) url.searchParams.set("closed_at", closed_at);
+
+        return this._driver.sendGet({
+            endpoint: url.toString(),
+        });
+    }
+
+    UpdateTicketDatastoreInput = ["where", "to"];
+    UpdateTicketDatastore({ where, to }) {
         let url = this._driver.opaqueURL("/v1/tickets");
         return this._driver.sendPut({
-            data: { id_ticket, id_leak, id_identity, description, state },
+            data: { where, to },
+            endpoint: url.toString(),
+        });
+    }
+
+    ToggleMFAInput = ["state"];
+    ToggleMFA({ state }) {
+        let url = this._driver.opaqueURL("/login/mfa/toggle");
+        return this._driver.sendPost({
+            data: { state },
             endpoint: url.toString(),
         });
     }

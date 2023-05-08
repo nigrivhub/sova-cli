@@ -5,8 +5,8 @@
   "main": "cli-runner.js",
   "bin": "cli-runner.js",
   "scripts": {
-    "test": "node cli-runner.js help",
-    "ci": "npm run test && npm publish --access public"
+    "build-cli": "echo 'Not implemented'",
+    "run":"tsc && node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/nigrivhub/sova-cli#readme",
   "dependencies": {
-    "isomorphic-fetch": "^3.0.0"
+    "@types/node": "^20.1.0",
+    "isomorphic-fetch": "^3.0.0",
+    "typescript": "^5.0.4"
   }
 }

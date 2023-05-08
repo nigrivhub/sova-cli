@@ -1,7 +1,7 @@
-const fetch = require("isomorphic-fetch");
-const options = require("./options");
+import fetch from "isomorphic-fetch";
+import options from "./options";
 
-module.exports = class ApiDriver {
+export default class ApiDriver {
 
     constructor({ host } = { host: "" }) {
         this.host = host || API_HOST;
@@ -12,7 +12,7 @@ module.exports = class ApiDriver {
     }
 
     getApiFullPath() {
-        return 'https://' + this.getApiHost();
+        return 'http://' + this.getApiHost();
     }
 
     opaqueURL(uri) {
