@@ -17,12 +17,14 @@ export async function loginPrompt() {
 async function authenticate(passes: { email: string; password: string }) {
     const [api, isDev] = useApi();
     try {
-        const { jwt } = await api.Login(passes);
+        const res = await api.PasswordLogin(passes);
+        const {token:jwt} = res
         const destinationPath = isDev ? '.sova-cli-dev' : '.sova-cli';
         mkdirSync(join(homedir(), destinationPath), { mode: 0o740, recursive: true });
         writeFileSync(join(homedir(), destinationPath, 'token'), jwt, { mode: 0o640 });
         console.log('\nAuthentication success');
     } catch (e) {
+        console.log(e)
         console.log("\nAuthentication failed, quitting");
         process.exit(1);
     }

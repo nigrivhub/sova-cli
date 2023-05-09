@@ -6,7 +6,7 @@
   "bin": "cli-runner.js",
   "scripts": {
     "build-cli": "echo 'Not implemented'",
-    "run":"tsc && node dist/index.js"
+    "run":"tsc && NODE_ENV=dev node dist/index.js"
   },
   "type":"module",
   "repository": {

@@ -1,7 +1,4 @@
-import { mkdirSync, writeFileSync } from "fs"
-import { homedir } from "os"
-import { join } from "path"
-import { useApi, readFromStd, readlineWrapper, getApiFunctions } from "./utils.js"
+import { useApi, readlineWrapper, getApiFunctions, green } from "./utils.js"
 
 export function provideInfo(name:string):string[] | undefined {
     const possbileNames = getApiFunctions()
@@ -11,11 +8,18 @@ export function provideInfo(name:string):string[] | undefined {
     return inputObj
 }
 
-export function runCommand(args){
+export async function runCommand(args){
+    const [api, isDev] = useApi()
     const apiFunc = args[0]
     const apiInfo = provideInfo(apiFunc)
+    const funcParams = {}
     if(apiInfo){
-        return apiFunc(...args.slice(1))       
+        await readlineWrapper(async ({askForAnyEvenEmptyString}) => {
+            for(let endpointArgument of apiInfo){
+                const val = await askForAnyEvenEmptyString(`Provide value for argument: ${green(endpointArgument)} (Or press enter if you want to leave it blank):\n\r `)
+                funcParams[endpointArgument] = val
+            }
+        })
     } 
-    return apiFunc()
+    return api[apiFunc](funcParams)
 }

@@ -2,7 +2,7 @@
 
 import { provideInfo, runCommand } from "./apiController.js";
 import { loginPrompt } from "./login.js";
-import { useApi, me, getApiFunctions } from "./utils.js";
+import { useApi, me, getApiFunctions, green, red } from "./utils.js";
 
 const commands = {
     "test-online-connection": async () => {
@@ -19,7 +19,6 @@ const commands = {
         }
     },
     "ls": async args => {
-        console.log('args',args)
         if (args.length != 2) {
             console.log('Usage: `sova-cli ls \n\nReturns list of possible commands to run with sova-cli run `');
             return;
@@ -37,9 +36,15 @@ const commands = {
     'run': async args => {
         const argsWithoutGarbage = args.slice(2)
         try {
-            return runCommand(argsWithoutGarbage)
+            const result = await runCommand(argsWithoutGarbage)
+            if(result && result.status && (result.status === 200 || result.status === 201 ) ){
+                console.log(green('Success'))
+            } else if (result && result.status && result.status !== 200 && result.status !== 201 ){
+                console.log(red('Failure'))
+            }
+            console.log(result)
         } catch(e) {
-            console.log(e.message)
+            console.log(red(`Error: ${e.message}`))
         }
     },
     'info': async args => {
@@ -68,6 +73,7 @@ const commands = {
 
 (async () => {
     let args = process.argv.slice(process.argv[0].match(/node(\.exe)?$/g) ? 1 : 0);
+    useApi()
     if (!commands[args[1]] || args[1] === "help") {
         console.log("What you can use:")
         Object.keys(commands).forEach(x => console.log("\t", x));

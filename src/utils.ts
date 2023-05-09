@@ -7,6 +7,7 @@ import { readFileSync } from "fs";
 import { homedir } from "os";
 
 export const green = x => `\x1b[32m${x}\x1b[0m`;
+export const red = x => `\x1b[41m${x}\x1b[0m`;
 
 interface readlineWrapperInput {
     askForAnyNonEmptyString: (question: string) => Promise<string>;
@@ -78,14 +79,15 @@ export function readJWT(jwt:string){
 }
 
 export const isDev = process.env.NODE_ENV == 'dev';
+
+if(isDev) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    console.log('Running in development mode.')
+}
+
 export function useApi(): [ProdApi, boolean] {
-    console.log('DA',DevApi, 'PA', ProdApi)
     let api = new (isDev ? DevApi : ProdApi)();
-    api._driver.getToken = getToken(isDev)
-    if (isDev) {
-        console.log()
-        console.log('running in dev env')
-    }
+    api._driver.getToken = () => getToken(isDev)
     return [api, isDev];
 }
 
