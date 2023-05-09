@@ -8,6 +8,7 @@
     "build-cli": "echo 'Not implemented'",
     "run":"tsc && node dist/index.js"
   },
+  "type":"module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nigrivhub/sova-cli.git"

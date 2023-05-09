@@ -10,3 +10,12 @@ export function provideInfo(name:string):string[] | undefined {
     const inputObj = api[`${name}Input`]
     return inputObj
 }
+
+export function runCommand(args){
+    const apiFunc = args[0]
+    const apiInfo = provideInfo(apiFunc)
+    if(apiInfo){
+        return apiFunc(...args.slice(1))       
+    } 
+    return apiFunc()
+}

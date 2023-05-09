@@ -1,5 +1,4 @@
 import fetch from "isomorphic-fetch";
-import options from "./options";
 
 export default class ApiDriver {
 
@@ -20,7 +19,6 @@ export default class ApiDriver {
     }
 
     getToken() {
-        return options.getToken();
     }
 
     sendPost({ endpoint, data } = {}) {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { provideInfo } from "./apiController.js";
+import { provideInfo, runCommand } from "./apiController.js";
 import { loginPrompt } from "./login.js";
 import { useApi, me, getApiFunctions } from "./utils.js";
 
@@ -33,6 +33,14 @@ const commands = {
             return;
         }
         await loginPrompt();
+    },
+    'run': async args => {
+        const argsWithoutGarbage = args.slice(2)
+        try {
+            return runCommand(argsWithoutGarbage)
+        } catch(e) {
+            console.log(e.message)
+        }
     },
     'info': async args => {
         if (args.length != 3) {

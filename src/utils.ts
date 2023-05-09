@@ -1,6 +1,6 @@
 import readline from "readline";
-import DevApi from "./api/api-dev.js";
-import ProdApi from "./api/api.js";
+import  DevApi  from "../api/api-dev.js";
+import ProdApi from "../api/api.js";
 import path from "path";
 import { env } from "process";
 import { readFileSync } from "fs";
@@ -79,8 +79,9 @@ export function readJWT(jwt:string){
 
 export const isDev = process.env.NODE_ENV == 'dev';
 export function useApi(): [ProdApi, boolean] {
+    console.log('DA',DevApi, 'PA', ProdApi)
     let api = new (isDev ? DevApi : ProdApi)();
-    api._drivers.getToken = getToken(isDev)
+    api._driver.getToken = getToken(isDev)
     if (isDev) {
         console.log()
         console.log('running in dev env')

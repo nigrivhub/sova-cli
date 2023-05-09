@@ -1,5 +1,5 @@
 import Api from "./api.js";
-import options from "./options";
+import options from "./options.js";
 
 const getMethods = (obj) => {
     let result = new Set();

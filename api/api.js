@@ -2,7 +2,7 @@ import ApiDriver from "./driver.js";
 
 const API_HOST = "api.sova.nigrivhub.com.local";
 
-module.exports = class API {
+export default class API {
     
     constructor() {
         this._driver = new ApiDriver({ host: API_HOST });
