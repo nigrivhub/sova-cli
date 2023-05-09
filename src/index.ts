@@ -8,7 +8,7 @@ const commands = {
     "test-online-connection": async () => {
         try {
             const [api] = useApi();
-            let resp = await api.Index();
+            let resp = await api.TestAvailability();
             if (resp.status < 200 || resp.status > 399) {
                 throw new Error("Status code = " + resp.status);
             }

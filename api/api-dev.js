@@ -446,15 +446,6 @@ export default class API {
         });
     }
 
-    ServiceLoginInput = ["key"];
-    ServiceLogin({ key }) {
-        let url = this._driver.opaqueURL("/auth/service");
-        return this._driver.sendPost({
-            data: { key },
-            endpoint: url.toString(),
-        });
-    }
-
     SetPhoneInput = ["email", "phone"];
     SetPhone({ email, phone }) {
         let url = this._driver.opaqueURL("/user/phone");
@@ -494,6 +485,15 @@ export default class API {
         let url = this._driver.opaqueURL("/test");
 
         return this._driver.sendGet({
+            endpoint: url.toString(),
+        });
+    }
+
+    TestAvailabilityInput = ["key"];
+    TestAvailability({ key }) {
+        let url = this._driver.opaqueURL("/auth/service");
+        return this._driver.sendPost({
+            data: { key },
             endpoint: url.toString(),
         });
     }
